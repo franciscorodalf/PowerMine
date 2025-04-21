@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="es.franciscorodalf.powermine.frontend.controller.LoginController" prefWidth="400" prefHeight="350">
+    
+    <VBox alignment="CENTER" spacing="15" layoutX="50" layoutY="40" prefWidth="300" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="40">
+        
+        <Label text="Iniciar Sesión" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+        <TextField fx:id="identificadorField" promptText="Correo o nombre de usuario" prefWidth="250" />
+        <PasswordField fx:id="passwordField" promptText="Contraseña" prefWidth="250" />
+
+        <Button text="Ingresar" onAction="#handleLogin" prefWidth="150" />
+
+        <Label fx:id="loginErrorLabel" text="Credenciales incorrectas." textFill="red" visible="false" />
+
+        <HBox spacing="10" alignment="CENTER">
+            <Hyperlink text="¿No tienes cuenta?" onAction="#handleGoToRegister" />
+            <Hyperlink text="¿Olvidaste tu contraseña?" onAction="#handleForgotPassword" />
+        </HBox>
+
+    </VBox>
+</AnchorPane>

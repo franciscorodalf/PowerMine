@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="es.franciscorodalf.powermine.frontend.controller.EditarPerfilController"
+            prefWidth="500" prefHeight="400">
+
+    <VBox alignment="CENTER" spacing="15" AnchorPane.topAnchor="30" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30">
+
+        <Label text="Editar Perfil" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+        <TextField fx:id="campoNombreUsuario" promptText="Nombre de usuario" prefWidth="300" />
+        <TextField fx:id="campoCorreo" promptText="Correo electrónico" editable="false" prefWidth="300" />
+
+        <Separator prefWidth="300" />
+
+        <PasswordField fx:id="campoNuevaContrasenia" promptText="Nueva contraseña (opcional)" prefWidth="300" />
+        <PasswordField fx:id="campoConfirmarContrasenia" promptText="Confirmar nueva contraseña" prefWidth="300" />
+
+        <Label fx:id="etiquetaError" text="" textFill="red" visible="false" wrapText="true" />
+        <Label fx:id="etiquetaExito" text="Cambios guardados correctamente." textFill="green" visible="false" wrapText="true" />
+
+        <HBox spacing="20" alignment="CENTER">
+            <Button text="Guardar cambios" onAction="#manejarGuardarCambios" prefWidth="150" />
+            <Button text="Volver al menú" onAction="#manejarVolverAlMenu" prefWidth="150" />
+        </HBox>
+
+    </VBox>
+</AnchorPane>

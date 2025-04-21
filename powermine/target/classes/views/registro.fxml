@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="es.franciscorodalf.powermine.frontend.controller.RegistroController" prefWidth="400" prefHeight="450">
+
+    <VBox alignment="CENTER" spacing="15" layoutX="50" layoutY="30" prefWidth="300"
+          AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="30">
+
+        <Label text="Crear Cuenta" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+        <TextField fx:id="campoUsuario" promptText="Nombre de usuario" prefWidth="250" />
+        <TextField fx:id="campoCorreo" promptText="Correo electrónico" prefWidth="250" />
+        <PasswordField fx:id="campoContrasena" promptText="Contraseña" prefWidth="250" />
+        <PasswordField fx:id="campoConfirmarContrasena" promptText="Confirmar contraseña" prefWidth="250" />
+
+        <Button text="Registrarse" onAction="#manejarRegistro" prefWidth="150" />
+        
+        <Label fx:id="etiquetaErrorRegistro" text="Error al registrar usuario." textFill="red" visible="false" />
+
+        <Hyperlink text="¿Ya tienes cuenta? Inicia sesión" onAction="#manejarIrALogin" />
+
+    </VBox>
+</AnchorPane>

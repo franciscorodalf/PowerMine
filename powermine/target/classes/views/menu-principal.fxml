@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="es.franciscorodalf.powermine.frontend.controller.MenuPrincipalController"
+            prefWidth="600" prefHeight="400">
+
+    <VBox spacing="20" alignment="CENTER" AnchorPane.topAnchor="20" AnchorPane.bottomAnchor="20"
+          AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+
+        <Label text="Bienvenido a PowerMine" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+        <VBox spacing="5" alignment="CENTER">
+            <Label fx:id="labelNombreUsuario" text="Usuario: ---" />
+            <Label fx:id="labelCorreoUsuario" text="Correo: ---" />
+        </VBox>
+
+        <VBox spacing="8" alignment="CENTER">
+            <Label text="Tus estadísticas:" style="-fx-font-weight: bold;" />
+            <Label fx:id="labelPartidasJugadas" text="Partidas jugadas: 0" />
+            <Label fx:id="labelPartidasGanadas" text="Partidas ganadas: 0" />
+            <Label fx:id="labelPuntajeTotal" text="Puntaje total: 0" />
+        </VBox>
+
+        <HBox spacing="20" alignment="CENTER">
+            <Button text="Jugar Partida" onAction="#manejarJugar" prefWidth="150" />
+            <Button text="Editar Perfil" onAction="#manejarEditarPerfil" prefWidth="150" />
+            <Button text="Cerrar Sesión" onAction="#manejarCerrarSesion" prefWidth="150" />
+        </HBox>
+
+    </VBox>
+</AnchorPane>

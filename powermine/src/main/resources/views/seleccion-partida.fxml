@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="es.franciscorodalf.powermine.frontend.controller.SeleccionPartidaController"
+            prefWidth="700" prefHeight="400">
+
+    <HBox spacing="30" alignment="CENTER" AnchorPane.topAnchor="20" AnchorPane.bottomAnchor="20"
+          AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+
+        <VBox spacing="25" alignment="CENTER_LEFT" prefWidth="250">
+            <Label text="Selecciona la dificultad" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+            <ToggleGroup fx:id="grupoDificultad" />
+
+            <VBox spacing="10">
+                <RadioButton text="Fácil (8x8)" toggleGroup="$grupoDificultad" fx:id="opcionFacil" selected="true" />
+                <RadioButton text="Medio (12x12)" toggleGroup="$grupoDificultad" fx:id="opcionMedio" />
+                <RadioButton text="Difícil (16x16)" toggleGroup="$grupoDificultad" fx:id="opcionDificil" />
+            </VBox>
+
+            <HBox spacing="15" alignment="CENTER">
+                <Button text="Iniciar Partida" onAction="#manejarIniciarPartida" prefWidth="120" />
+                <Button text="Volver" onAction="#manejarVolverAlMenu" prefWidth="90" />
+            </HBox>
+        </VBox>
+
+        <VBox spacing="10" prefWidth="400">
+            <Label text="Reglas del juego" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <TextFlow prefHeight="250" prefWidth="400">
+                <Text wrappingWidth="380" text="
+PowerMine es una versión mejorada del clásico Buscaminas.
+Tu objetivo es descubrir todas las casillas seguras sin caer en una mina.
+
+• Cada dificultad cambia el tamaño del tablero y número de minas.
+• Algunas casillas contienen poderes ocultos que puedes usar estratégicamente.
+• Los poderes te ayudarán a evitar minas, revelar zonas seguras o salvarte de una explosión.
+• No hay límite de tiempo. ¡Piensa bien cada movimiento!
+
+¡Buena suerte, estratega!" />
+            </TextFlow>
+        </VBox>
+    </HBox>
+</AnchorPane>

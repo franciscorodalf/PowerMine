@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="es.franciscorodalf.powermine.frontend.controller.RestablecerContraseniaController"
+            prefWidth="400" prefHeight="320">
+
+    <VBox alignment="CENTER" spacing="15" layoutX="50" layoutY="30" prefWidth="300"
+          AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="30">
+
+        <Label text="Restablecer Contraseña" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+        <PasswordField fx:id="campoNuevaContrasenia" promptText="Nueva contraseña" prefWidth="250" />
+        <PasswordField fx:id="campoConfirmarContrasenia" promptText="Confirmar nueva contraseña" prefWidth="250" />
+
+        <Button text="Guardar nueva contraseña" onAction="#manejarGuardar" prefWidth="180" />
+
+        <Label fx:id="etiquetaMensaje" text="" visible="false" wrapText="true" />
+
+        <Hyperlink text="Volver al inicio de sesión" onAction="#manejarIrALogin" />
+
+    </VBox>
+</AnchorPane>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="es.franciscorodalf.powermine.frontend.controller.TableroController"
+            prefWidth="800" prefHeight="600">
+
+    <!-- Parte superior: barra de información -->
+    <top>
+        <HBox spacing="30" padding="15" alignment="CENTER_LEFT">
+            <Label fx:id="labelPuntaje" text="Puntaje: 0" style="-fx-font-size: 16px;" />
+            <Label fx:id="labelCasillasRestantes" text="Casillas restantes: 0" style="-fx-font-size: 16px;" />
+            <Label fx:id="labelDificultad" text="Dificultad: Fácil" style="-fx-font-size: 16px;" />
+            <Button text="Volver al menú" onAction="#manejarVolverAlMenu" />
+        </HBox>
+    </top>
+
+    <!-- Centro: tablero de juego -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+            <GridPane fx:id="gridTablero" hgap="2" vgap="2" padding="10" />
+        </ScrollPane>
+    </center>
+
+    <!-- Inferior: poderes disponibles -->
+    <bottom>
+        <HBox fx:id="contenedorPoderes" spacing="10" padding="10" alignment="CENTER">
+            <!-- Aquí se agregarán botones de poderes dinámicamente -->
+        </HBox>
+    </bottom>
+
+</BorderPane>
