@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" 
+      fx:controller="es.franciscorodalf.powermine.frontend.controller.RankingController"
+      alignment="CENTER" spacing="20">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="🏆 Ranking de Jugadores" style="-fx-font-size: 24px;"/>
+    
+    <TextField fx:id="txtBuscar" promptText="Buscar jugador..." maxWidth="300"/>
+    
+    <TableView fx:id="tablaRanking">
+        <columns>
+            <TableColumn fx:id="posicionColumn" text="Posición" prefWidth="100"/>
+            <TableColumn fx:id="jugadorColumn" text="Jugador" prefWidth="150"/>
+            <TableColumn fx:id="puntajeColumn" text="Puntaje Total" prefWidth="150"/>
+            <TableColumn fx:id="victoriasColumn" text="Victorias" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <Button text="Volver" onAction="#manejarVolver"/>
+</VBox>

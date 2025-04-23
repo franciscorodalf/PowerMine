@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<HBox xmlns:fx="http://javafx.com/fxml" fx:controller="es.franciscorodalf.powermine.frontend.controller.PoderesController"
+      fx:id="contenedorPoderes"
+      alignment="CENTER" spacing="10">
+    <padding>
+        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+    </padding>
+    <!-- Los botones se agregarán dinámicamente o definirse aquí si se prefieren estáticos -->
+    <!-- Ejemplo de botones definidos estáticamente:
+    <Button text="Radar" minWidth="100" minHeight="60" onAction="#manejarRadar"/>
+    <Button text="Desminador" minWidth="100" minHeight="60" onAction="#manejarDesminador"/>
+    -->
+</HBox>

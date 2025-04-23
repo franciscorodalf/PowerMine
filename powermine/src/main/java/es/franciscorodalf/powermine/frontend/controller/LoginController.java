@@ -1,87 +1,115 @@
 package es.franciscorodalf.powermine.frontend.controller;
 
 import es.franciscorodalf.powermine.backend.model.Usuario;
-import es.franciscorodalf.powermine.backend.service.AlertaService;
 import es.franciscorodalf.powermine.backend.service.AutenticacionService;
+import es.franciscorodalf.powermine.backend.service.AlertaService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
-import javafx.scene.Node;
-import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class LoginController {
 
     @FXML
-    private TextField identificadorField;
-
+    private TextField txtEmail;
     @FXML
-    private PasswordField passwordField;
-
+    private PasswordField txtPassword;
     @FXML
-    private Label loginErrorLabel;
+    private Label lblMensaje;
+    @FXML
+    private Hyperlink linkRegistro;
+    @FXML
+    private Hyperlink linkRecuperar;
 
     private final AutenticacionService authService = new AutenticacionService();
 
     @FXML
     private void handleLogin(ActionEvent event) {
-        String identificador = identificadorField.getText().trim();
-        String contrasenia = passwordField.getText().trim();
+        // Oculta cualquier mensaje previo
+        lblMensaje.setVisible(false);
 
+        String identificador = txtEmail.getText().trim();
+        String contrasenia = txtPassword.getText();
+
+        // Validaciones básicas
         if (identificador.isEmpty() || contrasenia.isEmpty()) {
-            AlertaService.mensajeEnLabel(loginErrorLabel, "Rellena todos los campos.", true);
+            lblMensaje.setText("Por favor completa todos los campos.");
+            lblMensaje.setVisible(true);
             return;
         }
 
-        Usuario usuario = authService.iniciarSesion(identificador, contrasenia);
+        // Intento de login
+        Usuario user = authService.iniciarSesion(identificador, contrasenia);
+        if (user == null) {
+            lblMensaje.setText("Correo o contraseña incorrectos.");
+            lblMensaje.setVisible(true);
+            return;
+        }
 
-        if (usuario != null) {
-            AlertaService.mensajeEnLabel(loginErrorLabel, "", false);
+        // Carga menú principal
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/menu-principal.fxml"));
+            Parent root = loader.load();
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/menu-principal.fxml"));
-                Parent root = loader.load();
+            // Pasar usuario al controlador del menú
+            MenuPrincipalController menuCtrl = loader.getController();
+            menuCtrl.setUsuarioActual(user);
 
-                MenuPrincipalController menuController = loader.getController();
-                menuController.setUsuarioActual(usuario);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
 
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                AlertaService.mostrarError("Error", "No se pudo cargar el menú principal.");
-            }
-
-        } else {
-            AlertaService.mensajeEnLabel(loginErrorLabel, "Credenciales incorrectas.", true);
+        } catch (Exception e) {
+            // Mensaje crítico en alerta
+            AlertaService.mostrarError("Error", "No se pudo abrir el menú principal.");
+            e.printStackTrace();
         }
     }
 
     @FXML
-    private void handleGoToRegister(ActionEvent event) {
-        cambiarPantalla(event, "/views/registro.fxml");
-    }
-
-    @FXML
-    private void handleForgotPassword(ActionEvent event) {
-        cambiarPantalla(event, "/views/recuperar-contrasenia.fxml");
-    }
-
-    private void cambiarPantalla(ActionEvent event, String rutaFXML) {
+    private void handleIrARegistro(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource(rutaFXML));
+            Parent root = FXMLLoader.load(getClass().getResource("/views/registro.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
+            lblMensaje.setText("No se pudo cargar la pantalla de registro.");
+            lblMensaje.setVisible(true);
             e.printStackTrace();
-            AlertaService.mostrarError("Error", "No se pudo cambiar de pantalla.");
+        }
+    }
+
+    @FXML
+    private void handleIrARecuperar(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/views/restablecer-contrasenia.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            lblMensaje.setText("No se pudo cargar la recuperación de contraseña.");
+            lblMensaje.setVisible(true);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void manejarRanking() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/views/ranking.fxml"));
+            Stage stage = (Stage) txtEmail.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

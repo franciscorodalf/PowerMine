@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="es.franciscorodalf.powermine.frontend.controller.RegistroController" prefWidth="400" prefHeight="450">
+<AnchorPane prefHeight="450" prefWidth="400" stylesheets="@../styles/styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="es.franciscorodalf.powermine.frontend.controller.RegistroController">
 
-    <VBox alignment="CENTER" spacing="15" layoutX="50" layoutY="30" prefWidth="300"
-          AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="30">
+    <VBox alignment="CENTER" layoutX="50" layoutY="30" prefWidth="300" spacing="15" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="30">
 
-        <Label text="Crear Cuenta" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+        <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Crear Cuenta" />
 
-        <TextField fx:id="campoUsuario" promptText="Nombre de usuario" prefWidth="250" />
-        <TextField fx:id="campoCorreo" promptText="Correo electrónico" prefWidth="250" />
-        <PasswordField fx:id="campoContrasena" promptText="Contraseña" prefWidth="250" />
-        <PasswordField fx:id="campoConfirmarContrasena" promptText="Confirmar contraseña" prefWidth="250" />
+        <TextField fx:id="campoUsuario" prefWidth="250" promptText="Nombre de usuario" />
+        <TextField fx:id="campoCorreo" prefWidth="250" promptText="Correo electrónico" />
+        <PasswordField fx:id="campoContrasena" prefWidth="250" promptText="Contraseña" />
+        <PasswordField fx:id="campoConfirmarContrasena" prefWidth="250" promptText="Confirmar contraseña" />
 
-        <Button text="Registrarse" onAction="#manejarRegistro" prefWidth="150" />
+        <Button onAction="#manejarRegistro" prefWidth="150" text="Registrarse" />
         
         <Label fx:id="etiquetaErrorRegistro" text="Error al registrar usuario." textFill="red" visible="false" />
 
-        <Hyperlink text="¿Ya tienes cuenta? Inicia sesión" onAction="#manejarIrALogin" />
+        <Hyperlink onAction="#manejarIrALogin" text="¿Ya tienes cuenta? Inicia sesión" />
 
     </VBox>
 </AnchorPane>

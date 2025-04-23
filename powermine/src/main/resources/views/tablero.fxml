@@ -1,34 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="es.franciscorodalf.powermine.frontend.controller.TableroController"
-            prefWidth="800" prefHeight="600">
+<BorderPane prefHeight="600" prefWidth="800" stylesheets="@../styles/styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="es.franciscorodalf.powermine.frontend.controller.TableroController">
+    <stylesheets>
+        <URL value="@../styles/tablero.css" />
+    </stylesheets>
 
     <!-- Parte superior: barra de información -->
     <top>
-        <HBox spacing="30" padding="15" alignment="CENTER_LEFT">
-            <Label fx:id="labelPuntaje" text="Puntaje: 0" style="-fx-font-size: 16px;" />
-            <Label fx:id="labelCasillasRestantes" text="Casillas restantes: 0" style="-fx-font-size: 16px;" />
-            <Label fx:id="labelDificultad" text="Dificultad: Fácil" style="-fx-font-size: 16px;" />
-            <Button text="Volver al menú" onAction="#manejarVolverAlMenu" />
+        <HBox alignment="CENTER_LEFT" spacing="30">
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+            <Label fx:id="labelPuntaje" style="-fx-font-size: 16px;" text="Puntaje: 0" />
+            <Label fx:id="labelCasillasRestantes" style="-fx-font-size: 16px;" text="Casillas restantes: 0" />
+            <Label fx:id="labelDificultad" style="-fx-font-size: 16px;" text="Dificultad: Fácil" />
+            <Label fx:id="labelMinas" style="-fx-font-size: 16px;" text="Minas: 0" />
+            <Button onAction="#manejarVolverAlMenu" text="Volver al menú" />
         </HBox>
     </top>
 
-    <!-- Centro: tablero de juego -->
+    <!-- Centro: Tablero y componente de poderes -->
     <center>
-        <ScrollPane fitToWidth="true" fitToHeight="true">
-            <GridPane fx:id="gridTablero" hgap="2" vgap="2" padding="10" />
-        </ScrollPane>
+        <VBox alignment="CENTER" spacing="20">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            
+            <GridPane fx:id="gridTablero" alignment="CENTER" hgap="2" vgap="2">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding>
+            </GridPane>
+
+            <VBox alignment="CENTER" spacing="10">
+                <Label fx:id="labelPoderSeleccionado" style="-fx-font-size: 16px;" text="Poder: Ninguno" />
+                <Button onAction="#manejarUsarPoder" text="Usar poder" />
+                <fx:include source="poderes.fxml" />
+            </VBox>
+        </VBox>
     </center>
 
-    <!-- Inferior: poderes disponibles -->
-    <bottom>
-        <HBox fx:id="contenedorPoderes" spacing="10" padding="10" alignment="CENTER">
-            <!-- Aquí se agregarán botones de poderes dinámicamente -->
-        </HBox>
-    </bottom>
-
+    <!-- Lateral: Información del poder seleccionado -->
+    <right>
+        <VBox prefWidth="250" spacing="10">
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+            <Label fx:id="labelNombrePoder" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <Label fx:id="labelDescripcionPoder" style="-fx-font-size: 14px;" wrapText="true" />
+        </VBox>
+    </right>
 </BorderPane>

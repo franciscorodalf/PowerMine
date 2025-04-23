@@ -1,9 +1,12 @@
 package es.franciscorodalf.powermine.backend.dao;
 
+import es.franciscorodalf.powermine.backend.model.RankingUsuario;
 import es.franciscorodalf.powermine.backend.model.Usuario;
 import es.franciscorodalf.powermine.backend.model.abstractas.Conexion;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDAO extends Conexion {
 
@@ -67,4 +70,92 @@ public class UsuarioDAO extends Conexion {
             return false;
         }
     }
+
+    public Usuario login(String identificador, String contrasenia) {
+        String sql = "SELECT * FROM usuarios WHERE correo = ? OR nombre_usuario = ?";
+
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setString(1, identificador);
+            stmt.setString(2, identificador);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String contraseniaEnBD = rs.getString("contrasenia");
+                if (contraseniaEnBD.equals(contrasenia)) {
+                    return new Usuario(
+                            rs.getInt("id"),
+                            rs.getString("nombre_usuario"),
+                            rs.getString("correo"),
+                            contraseniaEnBD);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("❌ Error al iniciar sesión: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    public List<RankingUsuario> obtenerRanking() {
+        List<RankingUsuario> ranking = new ArrayList<>();
+        String sql = """
+            SELECT u.nombre_usuario, 
+                   SUM(p.puntaje) as puntaje_total,
+                   COUNT(CASE WHEN p.ganada = 1 THEN 1 END) as victorias
+            FROM usuarios u
+            LEFT JOIN partidas p ON u.id = p.id_usuario
+            GROUP BY u.id, u.nombre_usuario
+            ORDER BY puntaje_total DESC
+        """;
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            int posicion = 1;
+            while (rs.next()) {
+                ranking.add(new RankingUsuario(
+                    posicion++,
+                    rs.getString("nombre_usuario"),
+                    rs.getInt("puntaje_total"),
+                    rs.getInt("victorias")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener ranking: " + e.getMessage());
+        }
+        return ranking;
+    }
+
+    public List<RankingUsuario> buscarUsuarios(String filtro) {
+        List<RankingUsuario> ranking = new ArrayList<>();
+        String sql = """
+            SELECT u.nombre_usuario, 
+                   COALESCE(SUM(p.puntaje), 0) as puntaje_total,
+                   COUNT(CASE WHEN p.ganada = 1 THEN 1 END) as victorias
+            FROM usuarios u
+            LEFT JOIN partidas p ON u.id = p.id_usuario
+            WHERE u.nombre_usuario LIKE ?
+            GROUP BY u.id, u.nombre_usuario
+            ORDER BY puntaje_total DESC
+        """;
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setString(1, "%" + filtro + "%");
+            ResultSet rs = stmt.executeQuery();
+            int posicion = 1;
+            while (rs.next()) {
+                ranking.add(new RankingUsuario(
+                    posicion++,
+                    rs.getString("nombre_usuario"),
+                    rs.getInt("puntaje_total"),
+                    rs.getInt("victorias")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar usuarios: " + e.getMessage());
+        }
+        return ranking;
+    }
+
 }

@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="es.franciscorodalf.powermine.frontend.controller.LoginController" prefWidth="400" prefHeight="350">
-    
-    <VBox alignment="CENTER" spacing="15" layoutX="50" layoutY="40" prefWidth="300" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="40">
-        
-        <Label text="Iniciar Sesión" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+<AnchorPane prefHeight="350" prefWidth="469.0" stylesheets="@../styles/styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="es.franciscorodalf.powermine.frontend.controller.LoginController">
 
-        <TextField fx:id="identificadorField" promptText="Correo o nombre de usuario" prefWidth="250" />
-        <PasswordField fx:id="passwordField" promptText="Contraseña" prefWidth="250" />
+    <VBox alignment="CENTER" layoutX="50" layoutY="40" prefWidth="300" spacing="15" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="40">
 
-        <Button text="Ingresar" onAction="#handleLogin" prefWidth="150" />
+        <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Iniciar Sesión" />
 
-        <Label fx:id="loginErrorLabel" text="Credenciales incorrectas." textFill="red" visible="false" />
+        <TextField fx:id="txtEmail" prefWidth="250" promptText="Correo o nombre de usuario" />
+        <PasswordField fx:id="txtPassword" prefWidth="250" promptText="Contraseña" />
 
-        <HBox spacing="10" alignment="CENTER">
-            <Hyperlink text="¿No tienes cuenta?" onAction="#handleGoToRegister" />
-            <Hyperlink text="¿Olvidaste tu contraseña?" onAction="#handleForgotPassword" />
+        <Button onAction="#handleLogin" prefWidth="150" text="Ingresar" />
+
+        <Label fx:id="lblMensaje" text="" textFill="red" visible="false" wrapText="true" />
+
+        <HBox alignment="CENTER" spacing="10">
+            <Hyperlink onAction="#handleIrARegistro" text="¿No tienes cuenta?" />
+            <Hyperlink onAction="#handleIrARecuperar" text="¿Olvidaste tu contraseña?" />
+            <Hyperlink onAction="#manejarRanking" text="Ver Ranking" />
         </HBox>
 
     </VBox>

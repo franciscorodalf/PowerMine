@@ -3,29 +3,26 @@ package es.franciscorodalf.powermine.frontend.controller;
 import es.franciscorodalf.powermine.backend.model.Usuario;
 import es.franciscorodalf.powermine.backend.service.AlertaService;
 import es.franciscorodalf.powermine.backend.service.AutenticacionService;
+import es.franciscorodalf.powermine.utils.ValidadorFormulario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 
 public class RegistroController {
 
     @FXML
     private TextField campoUsuario;
-
     @FXML
     private TextField campoCorreo;
-
     @FXML
-    private PasswordField campoContrasenia;
-
+    private PasswordField campoContrasena;
     @FXML
-    private PasswordField campoConfirmarContrasenia;
-
+    private PasswordField campoConfirmarContrasena;
     @FXML
     private Label etiquetaErrorRegistro;
 
@@ -33,47 +30,67 @@ public class RegistroController {
 
     @FXML
     private void manejarRegistro(ActionEvent event) {
-        String usuario = campoUsuario.getText().trim();
+        String nombreUsuario = campoUsuario.getText().trim();
         String correo = campoCorreo.getText().trim();
-        String contrasenia = campoContrasenia.getText().trim();
-        String confirmar = campoConfirmarContrasenia.getText().trim();
+        String contrasena = campoContrasena.getText();
+        String confirmar = campoConfirmarContrasena.getText();
 
-        if (usuario.isEmpty() || correo.isEmpty() || contrasenia.isEmpty() || confirmar.isEmpty()) {
-            AlertaService.mensajeEnLabel(etiquetaErrorRegistro, "Todos los campos son obligatorios.", true);
+        if (ValidadorFormulario.estaVacio(nombreUsuario) || ValidadorFormulario.estaVacio(correo)
+                || ValidadorFormulario.estaVacio(contrasena) || ValidadorFormulario.estaVacio(confirmar)) {
+            mostrarMensaje("Completa todos los campos.", true);
             return;
         }
 
-        if (!contrasenia.equals(confirmar)) {
-            AlertaService.mensajeEnLabel(etiquetaErrorRegistro, "Las contraseñas no coinciden.", true);
+        if (ValidadorFormulario.contieneEspacios(nombreUsuario)) {
+            mostrarMensaje("El nombre de usuario no debe contener espacios.", true);
             return;
         }
 
-        Usuario nuevo = new Usuario(0, usuario, correo, contrasenia);
+        if (!ValidadorFormulario.esCorreoValido(correo)) {
+            mostrarMensaje("El correo electrónico no es válido.", true);
+            return;
+        }
 
+        if (!ValidadorFormulario.contrasenasCoinciden(contrasena, confirmar)) {
+            mostrarMensaje("Las contraseñas no coinciden.", true);
+            return;
+        }
+
+        if (!ValidadorFormulario.contrasenaValida(contrasena)) {
+            mostrarMensaje("Contraseña muy corta o contiene espacios.", true);
+            return;
+        }
+
+        Usuario nuevo = new Usuario(0, nombreUsuario, correo, contrasena);
         boolean registrado = authService.registrarUsuario(nuevo);
 
         if (registrado) {
-            AlertaService.mostrarInfo("Registro exitoso", "¡Tu cuenta ha sido creada!");
-            redirigirALogin(event);
+            mostrarMensaje("¡Registro exitoso! Redirigiendo...", false);
+            redirigirAlLogin(event);
         } else {
-            AlertaService.mensajeEnLabel(etiquetaErrorRegistro, "Ya existe un usuario o correo con esos datos.", true);
+            mostrarMensaje("Nombre de usuario o correo ya en uso.", true);
         }
     }
 
     @FXML
     private void manejarIrALogin(ActionEvent event) {
-        redirigirALogin(event);
+        redirigirAlLogin(event);
     }
 
-    private void redirigirALogin(ActionEvent event) {
+    private void redirigirAlLogin(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/views/login.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
-            e.printStackTrace();
-            AlertaService.mostrarError("Error", "No se pudo cambiar a la pantalla de login.");
+            AlertaService.mostrarError("Error", "No se pudo abrir la pantalla de inicio.");
         }
+    }
+
+    private void mostrarMensaje(String texto, boolean esError) {
+        etiquetaErrorRegistro.setText(texto);
+        etiquetaErrorRegistro.setStyle(esError ? "-fx-text-fill: red;" : "-fx-text-fill: green;");
+        etiquetaErrorRegistro.setVisible(true);
     }
 }

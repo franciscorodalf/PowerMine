@@ -1,0 +1,159 @@
+/* Estilos generales y variables */
+* {
+    -fx-primary: #2196F3;
+    -fx-secondary: #FF4081;
+    -fx-grey: #b9b9b9;
+    -fx-focus-color: -fx-secondary;
+}
+
+.root {
+    -fx-background-color: #f5f5f5;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Estilos para botones */
+.button {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 10 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: derive(-fx-primary, 20%);
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 4);
+}
+
+/* Estilos para el tablero */
+.grid-pane {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
+    -fx-background-radius: 10;
+}
+
+/* Estilos para casillas del tablero */
+.casilla {
+    -fx-background-color: white;
+    -fx-border-color: -fx-grey;
+    -fx-border-width: 1;
+    -fx-min-width: 35px;
+    -fx-min-height: 35px;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.casilla:hover {
+    -fx-background-color: derive(-fx-primary, 90%);
+    -fx-border-color: -fx-primary;
+}
+
+/* Estilos para labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #424242;
+}
+
+.titulo {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 1, 0, 0, 1);
+}
+
+/* Estilos para campos de texto */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: -fx-grey;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 8 15;
+    -fx-prompt-text-fill: derive(-fx-grey, 20%);
+}
+
+.text-field:focused {
+    -fx-border-color: -fx-primary;
+    -fx-background-color: derive(white, 5%);
+}
+
+/* Estilos para tabla de ranking */
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-alignment: center;
+    -fx-padding: 10 15;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: derive(white, -2%);
+}
+
+.table-row-cell:selected {
+    -fx-background-color: derive(-fx-primary, 50%);
+}
+
+/* Estilos para poderes */
+.poder-btn {
+    -fx-background-color: -fx-secondary;
+    -fx-font-size: 20px;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-background-radius: 25;
+}
+
+.poder-btn:hover {
+    -fx-background-color: derive(-fx-secondary, 20%);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-effect: dropshadow(gaussian, rgba(255,64,129,0.3), 10, 0, 0, 0);
+}
+
+/* Estilos para mensajes */
+.mensaje-error {
+    -fx-text-fill: #f44336;
+    -fx-font-weight: bold;
+}
+
+.mensaje-exito {
+    -fx-text-fill: #4CAF50;
+    -fx-font-weight: bold;
+}
+
+/* Animaciones */
+.button, .poder-btn {
+    -fx-transition: all 0.2s ease-out;
+}
+
+/* Hyperlinks */
+.hyperlink {
+    -fx-text-fill: -fx-primary;
+    -fx-border-color: transparent;
+    -fx-padding: 4 0;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: derive(-fx-primary, 20%);
+    -fx-underline: true;
+}
+
+/* Scroll bars */
+.scroll-bar {
+    -fx-background-color: derive(#f0f0f0, 20%);
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: derive(-fx-primary, 50%);
+    -fx-background-radius: 10;
+}
