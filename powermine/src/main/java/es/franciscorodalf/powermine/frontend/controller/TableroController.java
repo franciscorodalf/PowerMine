@@ -24,7 +24,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controlador principal del juego Buscaminas.
+ * Maneja la lógica del tablero y la interacción con los poderes especiales.
+ */
 public class TableroController {
+    // Variables FXML para elementos de la interfaz
     @FXML
     private GridPane gridTablero;
     @FXML
@@ -42,9 +47,25 @@ public class TableroController {
     @FXML
     private Label labelDescripcionPoder;
 
+    /**
+     * Matriz de botones que representa el tablero visual
+     */
     private Button[][] casillas;
-    private int[][] tablero; // -1=bomba, -2=bombaConPoder, 0=vacío, n=número
+
+    /**
+     * Matriz que almacena el estado del tablero:
+     * -2 = mina con poder
+     * -1 = mina normal
+     * 0 = casilla vacía
+     * >0 = número de minas adyacentes
+     */
+    private int[][] tablero;
+
+    /**
+     * Matriz que registra qué casillas han sido reveladas
+     */
     private boolean[][] reveladas;
+
     private int filas, columnas, numMinas;
     private int casillasSeguras;
     private int puntaje = 0;
@@ -67,6 +88,9 @@ public class TableroController {
         actualizarEtiquetas();
     }
 
+    /**
+     * Configura el tablero según el nivel de dificultad seleccionado
+     */
     private void configurarTablero(String dificultad) {
         switch (dificultad) {
             case "Fácil":
@@ -78,8 +102,8 @@ public class TableroController {
                 numMinas = 20;
                 break;
             case "Difícil":
-                filas = columnas = 14; // Reducido de 16 a 14
-                numMinas = 30; // Ajustado de 35 a 30 para mantener la proporción
+                filas = columnas = 14;
+                numMinas = 30;
                 break;
         }
         casillasSeguras = (filas * columnas) - numMinas;
@@ -89,6 +113,9 @@ public class TableroController {
         labelDificultad.setText("Dificultad: " + dificultad);
     }
 
+    /**
+     * Inicializa el tablero colocando minas y calculando números
+     */
     private void inicializarTablero() {
         gridTablero.getChildren().clear();
         Random rand = new Random();
@@ -151,6 +178,10 @@ public class TableroController {
         return count;
     }
 
+    /**
+     * Revela una casilla y maneja la lógica correspondiente
+     * (mina, poder, número o casilla vacía)
+     */
     private void revelarCasilla(int fila, int columna) {
         if (reveladas[fila][columna])
             return;
@@ -224,13 +255,6 @@ public class TableroController {
                 casilla.setText("");
             }
         }
-    }
-
-    private void obtenerPoderAleatorio() {
-        Poder nuevoPoder = Poder.getTodosLosPoderes()[new Random().nextInt(Poder.getTodosLosPoderes().length)];
-        poderesDisponibles.add(nuevoPoder);
-        labelPoderSeleccionado.setText("¡Nuevo poder obtenido: " + nuevoPoder.getEmoji() + "!");
-        actualizarBotonesPoderes();
     }
 
     private void actualizarBotonesPoderes() {
@@ -307,24 +331,69 @@ public class TableroController {
         }
     }
 
+    /**
+     * Aplica el poder seleccionado en la casilla indicada
+     */
     private void aplicarPoder(int fila, int columna) {
-        if (poderSeleccionado == null) return;
+        if (poderSeleccionado == null)
+            return;
 
         switch (poderSeleccionado.getNombre()) {
             case "Radar":
                 revelarArea(fila, columna, 2);
                 break;
-            case "Fila":
-                limpiarFila(fila);
+            case "Tsunami":
+                aplicarTsunami(fila);
                 break;
-            case "Columna":
+            case "Terremoto":
                 limpiarColumna(columna);
                 break;
         }
-
         resetearEstadosPoder();
     }
 
+    /**
+     * Efecto del poder Tsunami: limpia toda una fila con animación
+     */
+    private void aplicarTsunami(int fila) {
+        int[] minasEliminadas = { 0 }; // Using array to allow modification in lambda
+
+        // Primero mostrar el efecto de ola
+        for (int j = 0; j < columnas; j++) {
+            final int col = j;
+            Button casilla = casillas[fila][j];
+
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.millis(100 * j), e -> {
+                        casilla.setStyle("-fx-background-color: #00BFFF;");
+                        casilla.setText("🌊");
+                    }));
+            timeline.play();
+        }
+
+        // Después procesar las casillas
+        Timeline procesoTimeline = new Timeline(new KeyFrame(Duration.millis(columnas * 100 + 500), e -> {
+            for (int j = 0; j < columnas; j++) {
+                if (!reveladas[fila][j]) {
+                    if (tablero[fila][j] < 0) {
+                        minasEliminadas[0]++;
+                        tablero[fila][j] = contarMinasAdyacentes(fila, j);
+                        numMinas--;
+                        actualizarNumerosAdyacentes(fila, j);
+                    }
+                    revelarCasilla(fila, j);
+                }
+            }
+            // Bonus de puntos por minas eliminadas
+            puntaje += minasEliminadas[0] * 20;
+            actualizarEtiquetas();
+        }));
+        procesoTimeline.play();
+    }
+
+    /**
+     * Efecto del poder Terremoto: limpia toda una columna
+     */
     private void limpiarColumna(int columna) {
         for (int i = 0; i < filas; i++) {
             if (!reveladas[i][columna]) {
@@ -334,6 +403,7 @@ public class TableroController {
                     // Convertir mina en casilla segura
                     tablero[i][columna] = contarMinasAdyacentes(i, columna);
                     numMinas--;
+                    actualizarNumerosAdyacentes(i, columna);
                     Button casilla = casillas[i][columna];
                     casilla.setStyle("-fx-background-color: gold;");
                     casilla.setText("💫");
@@ -350,33 +420,32 @@ public class TableroController {
         actualizarEtiquetas();
     }
 
-    private void limpiarFila(int fila) {
-        for (int j = 0; j < columnas; j++) {
-            if (!reveladas[fila][j]) {
-                if (tablero[fila][j] >= 0) {
-                    revelarCasilla(fila, j);
-                } else {
-                    // Convertir mina en casilla segura
-                    tablero[fila][j] = contarMinasAdyacentes(fila, j);
-                    numMinas--;
-                    Button casilla = casillas[fila][j];
-                    casilla.setStyle("-fx-background-color: gold;");
-                    casilla.setText("💫");
-                    final int columna = j;
-                    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-                        if (!reveladas[fila][columna]) {
-                            revelarCasilla(fila, columna);
-                        }
-                    }));
-                    timeline.play();
-                }
+    /**
+     * Efecto del poder Escudo: protege dos minas aleatorias
+     */
+    private void protegerCasillaAleatoria() {
+        List<Point> minas = buscarMinas();
+        if (minas.size() >= 2) {
+            // Proteger dos minas aleatorias
+            for (int i = 0; i < 2; i++) {
+                Point minaElegida = minas.remove(new Random().nextInt(minas.size()));
+                int fila = (int) minaElegida.getX();
+                int col = (int) minaElegida.getY();
+
+                tablero[fila][col] = contarMinasAdyacentes(fila, col);
+                numMinas--;
+                casillas[fila][col].setStyle("-fx-background-color: gold;");
+                casillas[fila][col].setText("🛡️");
+
+                // Actualizar números adyacentes
+                actualizarNumerosAdyacentes(fila, col);
             }
+            puntaje += 50; // Bonus por usar escudo
+            actualizarEtiquetas();
         }
-        actualizarEtiquetas();
     }
 
-    private void protegerCasillaAleatoria() {
-        // Buscar una mina aleatoria
+    private List<Point> buscarMinas() {
         List<Point> minas = new ArrayList<>();
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
@@ -385,104 +454,57 @@ public class TableroController {
                 }
             }
         }
-
-        if (!minas.isEmpty()) {
-            Point minaElegida = minas.get(new Random().nextInt(minas.size()));
-            int minaFila = (int) minaElegida.getX();
-            int minaCol = (int) minaElegida.getY();
-
-            Button casilla = casillas[minaFila][minaCol];
-            tablero[minaFila][minaCol] = contarMinasAdyacentes(minaFila, minaCol);
-            numMinas--;
-            
-            casilla.setStyle("-fx-background-color: lightblue;");
-            casilla.setText("🛡️");
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-                if (!reveladas[minaFila][minaCol]) {
-                    casilla.setText("");
-                }
-            }));
-            timeline.play();
-            actualizarEtiquetas();
-        }
+        return minas;
     }
 
-    private void protegerCasilla(int fila, int columna) {
-        if (tablero[fila][columna] < 0) { // Si es una mina
-            tablero[fila][columna] = contarMinasAdyacentes(fila, columna);
-            numMinas--;
-            Button casilla = casillas[fila][columna];
-            casilla.setStyle("-fx-background-color: lightblue;");
-            casilla.setText("🛡️");
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-                if (!reveladas[fila][columna]) {
-                    casilla.setText("");
-                }
-            }));
-            timeline.play();
-            actualizarEtiquetas();
-        }
-    }
-
+    /**
+     * Efecto del poder Radar: revela temporalmente las minas en un área
+     */
     private void revelarArea(int fila, int columna, int radio) {
         for (int i = -radio; i <= radio; i++) {
             for (int j = -radio; j <= radio; j++) {
                 int newFila = fila + i;
                 int newCol = columna + j;
-
-                // Verificar que la posición está dentro del tablero
-                if (newFila >= 0 && newFila < filas &&
-                        newCol >= 0 && newCol < columnas &&
-                        !reveladas[newFila][newCol]) {
-
+                if (newFila >= 0 && newFila < filas && newCol >= 0 && newCol < columnas) {
                     Button casilla = casillas[newFila][newCol];
-                    if (tablero[newFila][newCol] >= 0) {
-                        // Revelar casilla segura
-                        revelarNumero(newFila, newCol);
-                        reveladas[newFila][newCol] = true;
-                        casillasSeguras--;
-                        puntaje += 10;
-                    } else {
-                        // Marcar minas con un icono especial
+                    if (tablero[newFila][newCol] < 0) {
                         casilla.setText("⚠️");
                         casilla.setStyle("-fx-background-color: #FFE5E5;");
+                        // Efecto temporal
+                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), e -> {
+                            casilla.setText("");
+                            casilla.setStyle("");
+                        }));
+                        timeline.play();
                     }
                 }
             }
         }
-        actualizarEtiquetas();
     }
 
     // Renombrar y modificar el método eliminarMina para que no necesite parámetros
+    /**
+     * Efecto del poder Desminador: elimina una mina aleatoria
+     */
     private void eliminarMina() {
-        // Buscar una mina aleatoria
-        List<Point> minas = new ArrayList<>();
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                if (tablero[i][j] < 0 && !reveladas[i][j]) {
-                    minas.add(new Point(i, j));
-                }
-            }
-        }
-
+        List<Point> minas = buscarMinas();
         if (!minas.isEmpty()) {
-            // Seleccionar mina aleatoria
             Point minaElegida = minas.get(new Random().nextInt(minas.size()));
             int minaFila = (int) minaElegida.getX();
             int minaCol = (int) minaElegida.getY();
 
-            // Eliminar banderín si existe
             Button casillaMinada = casillas[minaFila][minaCol];
             if (casillaMinada.getText().equals("🚩")) {
                 casillaMinada.setText("");
             }
 
-            // Convertir mina en casilla normal
             tablero[minaFila][minaCol] = contarMinasAdyacentes(minaFila, minaCol);
             casillaMinada.setStyle("-fx-background-color: gold;");
             numMinas--;
 
-            // Mostrar efecto visual temporal
+            // Actualizar números adyacentes
+            actualizarNumerosAdyacentes(minaFila, minaCol);
+
             casillaMinada.setText("💥");
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
                 if (!reveladas[minaFila][minaCol]) {
@@ -495,12 +517,38 @@ public class TableroController {
         }
     }
 
+    /**
+     * Actualiza los números de las casillas adyacentes
+     * cuando se elimina una mina
+     */
+    private void actualizarNumerosAdyacentes(int fila, int columna) {
+        // Actualizar los números de las casillas adyacentes
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int newFila = fila + i;
+                int newCol = columna + j;
+                if (newFila >= 0 && newFila < filas &&
+                        newCol >= 0 && newCol < columnas &&
+                        tablero[newFila][newCol] >= 0) {
+
+                    tablero[newFila][newCol] = contarMinasAdyacentes(newFila, newCol);
+                    if (reveladas[newFila][newCol]) {
+                        revelarNumero(newFila, newCol);
+                    }
+                }
+            }
+        }
+    }
+
     private void actualizarEtiquetas() {
         labelPuntaje.setText("Puntaje: " + puntaje);
         labelCasillasRestantes.setText("Casillas restantes: " + casillasSeguras);
         labelMinas.setText("Minas: " + numMinas);
     }
 
+    /**
+     * Finaliza la partida y guarda el resultado
+     */
     private void finalizarPartida(boolean victoria) {
         revelarTableroCompleto();
 
@@ -518,10 +566,12 @@ public class TableroController {
         String mensaje = victoria ? "¡Felicitaciones! Has ganado con " + puntaje + " puntos"
                 : "Game Over. Puntaje final: " + puntaje;
 
+        // Mostrar el mensaje y esperar antes de volver al menú
         AlertaService.mostrarInfo("Fin del juego", mensaje);
 
-        // Volver al menú principal automáticamente
-        manejarVolverAlMenu();
+        // Esperar 2 segundos antes de volver al menú
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> manejarVolverAlMenu()));
+        timeline.play();
     }
 
     private void revelarTableroCompleto() {
@@ -537,11 +587,14 @@ public class TableroController {
         }
     }
 
+    /**
+     * Revela el número en una casilla y aplica el estilo correspondiente
+     */
     private void revelarNumero(int fila, int columna) {
         Button casilla = casillas[fila][columna];
         int valor = tablero[fila][columna];
         casilla.getStyleClass().add("casilla-revelada");
-        
+
         if (valor > 0) {
             casilla.setText(String.valueOf(valor));
             casilla.getStyleClass().add("numero-" + valor);
@@ -569,13 +622,23 @@ public class TableroController {
         }
     }
 
+    /**
+     * Maneja la selección y activación de poderes
+     */
     public void seleccionarPoder(Poder poder) {
+        if (puntaje < poder.getCostePuntos()) {
+            labelPoderSeleccionado.setText("⚠️ Necesitas " + poder.getCostePuntos() + " puntos");
+            labelPoderSeleccionado.setTextFill(Color.RED);
+            return;
+        }
+
         this.poderSeleccionado = poder;
         this.poderActual = poder.getNombre();
+        puntaje -= poder.getCostePuntos();
 
-        // Actualizar toda la información del poder
         labelPoderSeleccionado.setText("Poder seleccionado: " + poder.getEmoji());
         labelNombrePoder.setText(poder.getEmoji() + " " + poder.getNombre());
-        labelDescripcionPoder.setText(poder.getDescripcion());
+        labelDescripcionPoder.setText(poder.getInfoCompleta());
+        actualizarEtiquetas();
     }
 }

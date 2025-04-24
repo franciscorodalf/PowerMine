@@ -27,44 +27,6 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 4);
 }
 
-/* Estilos para el tablero */
-.grid-pane {
-    -fx-background-color: white;
-    -fx-padding: 15;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
-    -fx-background-radius: 10;
-}
-
-/* Estilos para casillas del tablero */
-.casilla {
-    -fx-background-color: white;
-    -fx-border-color: -fx-grey;
-    -fx-border-width: 1;
-    -fx-min-width: 35px;
-    -fx-min-height: 35px;
-    -fx-font-size: 14px;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-}
-
-.casilla:hover {
-    -fx-background-color: derive(-fx-primary, 90%);
-    -fx-border-color: -fx-primary;
-}
-
-/* Estilos para labels */
-.label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #424242;
-}
-
-.titulo {
-    -fx-font-size: 28px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -fx-primary;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 1, 0, 0, 1);
-}
-
 /* Estilos para campos de texto */
 .text-field {
     -fx-background-color: white;

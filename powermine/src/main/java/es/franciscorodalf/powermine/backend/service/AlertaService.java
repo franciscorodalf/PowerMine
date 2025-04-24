@@ -1,5 +1,6 @@
 package es.franciscorodalf.powermine.backend.service;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -67,6 +68,26 @@ public class AlertaService {
         }
 
         label.setVisible(true);
+    }
+
+    public static void mostrarErrorDespuesDeAnimacion(String titulo, String mensaje) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(titulo);
+            alert.setHeaderText(null);
+            alert.setContentText(mensaje);
+            alert.show(); // Usar show() en lugar de showAndWait()
+        });
+    }
+
+    public static void mostrarInfoDespuesDeAnimacion(String titulo, String mensaje) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(titulo);
+            alert.setHeaderText(null);
+            alert.setContentText(mensaje);
+            alert.show(); // Usar show() en lugar de showAndWait()
+        });
     }
 
 }

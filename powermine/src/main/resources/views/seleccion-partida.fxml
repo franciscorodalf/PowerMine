@@ -1,67 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="es.franciscorodalf.powermine.frontend.controller.SeleccionPartidaController"
-            prefWidth="700" prefHeight="400">
+<AnchorPane prefHeight="400" prefWidth="700" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="es.franciscorodalf.powermine.frontend.controller.SeleccionPartidaController">
 
     <!-- Definimos el ToggleGroup fuera del árbol de nodos -->
     <fx:define>
-        <ToggleGroup fx:id="grupoDificultad"/>
+        <ToggleGroup fx:id="grupoDificultad" />
     </fx:define>
 
-    <HBox spacing="30" alignment="CENTER"
-          AnchorPane.topAnchor="20"
-          AnchorPane.bottomAnchor="20"
-          AnchorPane.leftAnchor="20"
-          AnchorPane.rightAnchor="20">
+    <HBox alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
 
-        <VBox spacing="25" alignment="CENTER_LEFT" prefWidth="250">
-            <Label text="Selecciona la dificultad"
-                   style="-fx-font-size: 20px; -fx-font-weight: bold;" />
-
-            <!-- Ya no ponemos aquí el ToggleGroup -->
-
+        <VBox alignment="CENTER_LEFT" prefWidth="250" spacing="25">
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Selecciona la dificultad" />
+            
+            <Hyperlink onAction="#mostrarInfoPoderes" style="-fx-font-size: 14px;" text="Ver información detallada de poderes" underline="true" />
+            
             <VBox spacing="10">
-                <RadioButton fx:id="opcionFacil"
-                             text="Fácil (8x8)"
-                             toggleGroup="$grupoDificultad"
-                             selected="true"/>
-                <RadioButton fx:id="opcionMedio"
-                             text="Medio (12x12)"
-                             toggleGroup="$grupoDificultad"/>
-                <RadioButton fx:id="opcionDificil"
-                             text="Difícil (16x16)"
-                             toggleGroup="$grupoDificultad"/>
+                <RadioButton fx:id="opcionFacil" selected="true" text="Fácil (8x8)">
+               <toggleGroup>
+                  <ToggleGroup fx:id="grupoDificultad" />
+               </toggleGroup></RadioButton>
+                <RadioButton fx:id="opcionMedio" text="Medio (12x12)" toggleGroup="$grupoDificultad" />
+                <RadioButton fx:id="opcionDificil" text="Difícil (16x16)" toggleGroup="$grupoDificultad" />
             </VBox>
 
-            <HBox spacing="15" alignment="CENTER">
-                <Button text="Iniciar Partida"
-                        onAction="#manejarIniciarPartida"
-                        prefWidth="120"/>
-                <Button text="Volver"
-                        onAction="#manejarVolverAlMenu"
-                        prefWidth="90"/>
+            <HBox alignment="CENTER" spacing="15">
+                <Button onAction="#manejarIniciarPartida" prefWidth="120" text="Iniciar Partida" />
+                <Button onAction="#manejarVolverAlMenu" prefWidth="90" text="Volver" />
             </HBox>
         </VBox>
 
-        <VBox spacing="10" prefWidth="400">
-            <Label text="Reglas del juego"
-                   style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-            <TextFlow prefHeight="250" prefWidth="400">
-                <Text wrappingWidth="380" text="
-PowerMine es una versión mejorada del clásico Buscaminas.
-Tu objetivo es descubrir todas las casillas seguras sin caer en una mina.
-
-• Cada dificultad cambia el tamaño del tablero y número de minas.
-• Algunas casillas contienen poderes ocultos que puedes usar estratégicamente.
-• Los poderes te ayudarán a evitar minas, revelar zonas seguras o salvarte de una explosión.
-• No hay límite de tiempo. ¡Piensa bien cada movimiento!
-
-¡Buena suerte, estratega!" />
+        <VBox alignment="CENTER" prefWidth="400" spacing="10">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="Reglas del juego" />
+            
+            <TextFlow prefHeight="300" prefWidth="400" style="-fx-padding: 10;">
+                <Text style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-fill: #2C3E50;" text="🎮 BIENVENIDO A POWERMINE 🎮" />
+                <Text text="&#10;&#10;" />
+                
+                <Text style="-fx-font-size: 14px;" text="Un buscaminas revolucionario donde la estrategia se une con poderes únicos." />
+                <Text text="&#10;&#10;" />
+                
+                <Text style="-fx-font-size: 16px; -fx-font-weight: bold;" text="📋 REGLAS BÁSICAS:" />
+                <Text text="&#10;" />
+                <Text style="-fx-font-size: 14px;" text="• Descubre todas las casillas seguras sin detonar minas&#10;• Cada número indica las minas adyacentes&#10;• Click derecho para marcar posibles minas" />
+                <Text text="&#10;&#10;" />
+                
+                <Text style="-fx-font-size: 16px; -fx-font-weight: bold;" text="🎲 DIFICULTADES:" />
+                <Text text="&#10;" />
+                <Text style="-fx-font-size: 14px;" text="• Fácil: 8x8 tablero con 10 minas&#10;• Medio: 12x12 tablero con 20 minas&#10;• Difícil: 14x14 tablero con 30 minas" />
+                <Text text="&#10;&#10;" />
+                
+                <Text style="-fx-font-size: 16px; -fx-font-weight: bold;" text="⚡ SISTEMA DE PODERES:" />
+                <Text text="&#10;" />
+                <Text style="-fx-font-size: 14px;" text="• Algunas minas contienen poderes especiales&#10;• Consigue puntos para usar poderes estratégicos&#10;• Cada poder tiene un coste y efecto único" />
+                <Text text="&#10;&#10;" />
+                
+                <Text style="-fx-font-size: 16px; -fx-font-weight: bold;" text="🏆 RAREZA DE PODERES:" />
+                <Text text="&#10;" />
+                <Text style="-fx-font-size: 14px;" text="• Común: Visión, Desminador&#10;• Raro: Tsunami, Terremoto&#10;• Épico: Escudo, Radar" />
+                <Text text="&#10;&#10;" />
+                
+                <Text style="-fx-font-size: 16px; -fx-font-weight: bold;" text="💡 CONSEJOS:" />
+                <Text text="&#10;" />
+                <Text style="-fx-font-size: 14px;" text="• Usa las esquinas y bordes para empezar&#10;• Administra bien tus poderes&#10;• Los números son tu mejor pista" />
+                <Text text="&#10;&#10;" />
+                
+                <Text style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: #2C3E50;" text="¿Estás listo para el desafío?" />
             </TextFlow>
         </VBox>
     </HBox>

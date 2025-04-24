@@ -11,6 +11,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import javafx.stage.Modality;
 
 public class SeleccionPartidaController {
 
@@ -86,6 +87,22 @@ public class SeleccionPartidaController {
         } catch (Exception e) {
             AlertaService.mostrarError("Error", "No se pudo volver al menú principal.");
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void mostrarInfoPoderes() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/info-poderes.fxml"));
+            Parent root = loader.load();
+            
+            Stage infoPoderesStage = new Stage();
+            infoPoderesStage.initModality(Modality.APPLICATION_MODAL);
+            infoPoderesStage.setTitle("Información de Poderes");
+            infoPoderesStage.setScene(new Scene(root));
+            infoPoderesStage.show();
+        } catch (Exception e) {
+            AlertaService.mostrarError("Error", "No se pudo mostrar la información de poderes");
         }
     }
 }

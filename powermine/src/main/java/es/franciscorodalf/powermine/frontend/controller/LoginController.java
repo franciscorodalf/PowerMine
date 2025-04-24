@@ -1,5 +1,6 @@
 package es.franciscorodalf.powermine.frontend.controller;
 
+import es.franciscorodalf.powermine.utils.AnimationUtil;
 import es.franciscorodalf.powermine.backend.model.Usuario;
 import es.franciscorodalf.powermine.backend.service.AutenticacionService;
 import es.franciscorodalf.powermine.backend.service.AlertaService;
@@ -14,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.scene.layout.AnchorPane;
 
 public class LoginController {
 
@@ -27,8 +29,18 @@ public class LoginController {
     private Hyperlink linkRegistro;
     @FXML
     private Hyperlink linkRecuperar;
+    @FXML
+    private AnchorPane mainPane;
 
     private final AutenticacionService authService = new AutenticacionService();
+
+    @FXML
+    private void initialize() {
+        // Asegurarse de que mainPane no sea null antes de aplicar la animación
+        if (mainPane != null) {
+            AnimationUtil.fadeIn(mainPane, 1.0);
+        }
+    }
 
     @FXML
     private void handleLogin(ActionEvent event) {
@@ -40,6 +52,8 @@ public class LoginController {
 
         // Validaciones básicas
         if (identificador.isEmpty() || contrasenia.isEmpty()) {
+            if (identificador.isEmpty()) AnimationUtil.shake(txtEmail);
+            if (contrasenia.isEmpty()) AnimationUtil.shake(txtPassword);
             lblMensaje.setText("Por favor completa todos los campos.");
             lblMensaje.setVisible(true);
             return;
@@ -53,53 +67,52 @@ public class LoginController {
             return;
         }
 
-        // Carga menú principal
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/views/menu-principal.fxml"));
-            Parent root = loader.load();
-
-            // Pasar usuario al controlador del menú
-            MenuPrincipalController menuCtrl = loader.getController();
-            menuCtrl.setUsuarioActual(user);
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-
-        } catch (Exception e) {
-            // Mensaje crítico en alerta
-            AlertaService.mostrarError("Error", "No se pudo abrir el menú principal.");
-            e.printStackTrace();
-        }
+        // Modificar la transición al menú principal
+        AnimationUtil.fadeOut(mainPane, 0.5, () -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/menu-principal.fxml"));
+                Parent root = loader.load();
+                MenuPrincipalController menuCtrl = loader.getController();
+                menuCtrl.setUsuarioActual(user);
+                Stage stage = (Stage) mainPane.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (Exception e) {
+                AlertaService.mostrarErrorDespuesDeAnimacion("Error", "No se pudo abrir el menú principal.");
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
     private void handleIrARegistro(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/registro.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            lblMensaje.setText("No se pudo cargar la pantalla de registro.");
-            lblMensaje.setVisible(true);
-            e.printStackTrace();
-        }
+        AnimationUtil.slideToLeft(mainPane, 0.5, () -> {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/views/registro.fxml"));
+                Stage stage = (Stage) mainPane.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (Exception e) {
+                AlertaService.mostrarErrorDespuesDeAnimacion("Error", "No se pudo cargar la pantalla de registro.");
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
     private void handleIrARecuperar(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/restablecer-contrasenia.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            lblMensaje.setText("No se pudo cargar la recuperación de contraseña.");
-            lblMensaje.setVisible(true);
-            e.printStackTrace();
-        }
+        AnimationUtil.slideToLeft(mainPane, 0.5, () -> {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/views/restablecer-contrasenia.fxml"));
+                Stage stage = (Stage) mainPane.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (Exception e) {
+                lblMensaje.setText("No se pudo cargar la recuperación de contraseña.");
+                lblMensaje.setVisible(true);
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML

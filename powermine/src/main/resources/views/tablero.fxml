@@ -7,12 +7,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import java.net.URL?>
 
-<BorderPane prefHeight="600" prefWidth="800" stylesheets="@../styles/styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="es.franciscorodalf.powermine.frontend.controller.TableroController">
-    <stylesheets>
-        <URL value="@../styles/tablero.css" />
-    </stylesheets>
+<BorderPane prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscorodalf.powermine.frontend.controller.TableroController">
 
     <!-- Parte superior: barra de información -->
     <top>
@@ -20,10 +16,10 @@
             <padding>
                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
             </padding>
-            <Label fx:id="labelPuntaje" style="-fx-font-size: 16px;" text="Puntaje: 0" />
-            <Label fx:id="labelCasillasRestantes" style="-fx-font-size: 16px;" text="Casillas restantes: 0" />
-            <Label fx:id="labelDificultad" style="-fx-font-size: 16px;" text="Dificultad: Fácil" />
-            <Label fx:id="labelMinas" style="-fx-font-size: 16px;" text="Minas: 0" />
+            <Label fx:id="labelPuntaje" text="Puntaje: 0" />
+            <Label fx:id="labelCasillasRestantes" text="Casillas restantes: 0" />
+            <Label fx:id="labelDificultad" text="Dificultad: Fácil" />
+            <Label fx:id="labelMinas" text="Minas: 0" />
             <Button onAction="#manejarVolverAlMenu" text="Volver al menú" />
         </HBox>
     </top>
@@ -42,7 +38,7 @@
             </GridPane>
 
             <VBox alignment="CENTER" spacing="10">
-                <Label fx:id="labelPoderSeleccionado" style="-fx-font-size: 16px;" text="Poder: Ninguno" />
+                <Label fx:id="labelPoderSeleccionado" text="Poder: Ninguno" />
                 <Button onAction="#manejarUsarPoder" text="Usar poder" />
                 <fx:include source="poderes.fxml" />
             </VBox>
@@ -55,8 +51,11 @@
             <padding>
                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
             </padding>
-            <Label fx:id="labelNombrePoder" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-            <Label fx:id="labelDescripcionPoder" style="-fx-font-size: 14px;" wrapText="true" />
+            <Label fx:id="labelNombrePoder" />
+            <Label fx:id="labelDescripcionPoder" wrapText="true" />
+         <BorderPane.margin>
+            <Insets right="20.0" />
+         </BorderPane.margin>
         </VBox>
     </right>
 </BorderPane>
