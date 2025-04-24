@@ -16,6 +16,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
+import javafx.animation.ScaleTransition;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 public class LoginController {
 
@@ -31,6 +34,8 @@ public class LoginController {
     private Hyperlink linkRecuperar;
     @FXML
     private AnchorPane mainPane;
+    @FXML
+    private ImageView logoImage;
 
     private final AutenticacionService authService = new AutenticacionService();
 
@@ -40,6 +45,16 @@ public class LoginController {
         if (mainPane != null) {
             AnimationUtil.fadeIn(mainPane, 1.0);
         }
+        
+        // Animación de respiración para el logo
+        ScaleTransition breathingAnimation = new ScaleTransition(Duration.seconds(2), logoImage);
+        breathingAnimation.setFromX(1.0);
+        breathingAnimation.setFromY(1.0);
+        breathingAnimation.setToX(1.05);
+        breathingAnimation.setToY(1.05);
+        breathingAnimation.setAutoReverse(true);
+        breathingAnimation.setCycleCount(ScaleTransition.INDEFINITE);
+        breathingAnimation.play();
     }
 
     @FXML

@@ -600,6 +600,37 @@ public class TableroController {
             casilla.getStyleClass().add("numero-" + valor);
         }
         casilla.setStyle("-fx-background-color: lightgray;");
+
+        if (valor > 0) {
+            casilla.setText(String.valueOf(valor));
+            // Asignar color según el número
+            switch (valor) {
+                case 1:
+                    casilla.setTextFill(Color.BLUE);
+                    break;
+                case 2:
+                    casilla.setTextFill(Color.GREEN);
+                    break;
+                case 3:
+                    casilla.setTextFill(Color.RED);
+                    break;
+                case 4:
+                    casilla.setTextFill(Color.DARKBLUE);
+                    break;
+                case 5:
+                    casilla.setTextFill(Color.DARKRED);
+                    break;
+                case 6:
+                    casilla.setTextFill(Color.TEAL);
+                    break;
+                case 7:
+                    casilla.setTextFill(Color.BLACK);
+                    break;
+                case 8:
+                    casilla.setTextFill(Color.GRAY);
+                    break;
+            }
+        }
     }
 
     @FXML

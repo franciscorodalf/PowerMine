@@ -5,15 +5,20 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="mainPane" prefHeight="350" prefWidth="469.0" stylesheets="@../styles/styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="es.franciscorodalf.powermine.frontend.controller.LoginController">
+<AnchorPane fx:id="mainPane" prefHeight="489.0" prefWidth="469.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscorodalf.powermine.frontend.controller.LoginController">
 
     <VBox alignment="CENTER" layoutX="50" layoutY="40" prefWidth="300" spacing="15" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="40">
-
-        <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Iniciar Sesión" />
+      <ImageView fx:id="logoImage" fitHeight="241.0" fitWidth="208.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../photos/logo.png" />
+         </image>
+      </ImageView>
 
         <TextField fx:id="txtEmail" prefWidth="250" promptText="Correo o nombre de usuario" />
         <PasswordField fx:id="txtPassword" prefWidth="250" promptText="Contraseña" />
