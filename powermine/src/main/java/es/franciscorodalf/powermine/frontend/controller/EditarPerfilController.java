@@ -13,8 +13,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
+/**
+ * Controlador para la vista de edición de perfil de usuario.
+ * Permite modificar el nombre de usuario y la contraseña.
+ */
 public class EditarPerfilController {
 
+    // Elementos de la interfaz gráfica
     @FXML
     private TextField campoNombreUsuario;
     @FXML
@@ -28,15 +33,25 @@ public class EditarPerfilController {
     @FXML
     private Label etiquetaExito;
 
+    // Datos del usuario actual y servicio de autenticación
     private Usuario usuario;
     private final AutenticacionService authService = new AutenticacionService();
 
+    /**
+     * Establece el usuario actual y carga sus datos en los campos
+     * @param usuario Usuario a editar
+     */
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
         campoNombreUsuario.setText(usuario.getNombreUsuario());
         campoCorreo.setText(usuario.getCorreo());
     }
 
+    /**
+     * Maneja el evento de guardar cambios del perfil
+     * Valida y actualiza la información del usuario
+     * @param event Evento del botón guardar
+     */
     @FXML
     private void manejarGuardarCambios(ActionEvent event) {
         String nuevoNombre = campoNombreUsuario.getText().trim();
@@ -77,6 +92,10 @@ public class EditarPerfilController {
         }
     }
 
+    /**
+     * Maneja el evento de volver al menú principal
+     * @param event Evento del botón volver
+     */
     @FXML
     private void manejarVolverAlMenu(ActionEvent event) {
         try {
@@ -95,6 +114,11 @@ public class EditarPerfilController {
         }
     }
 
+    /**
+     * Muestra mensajes de éxito o error en la interfaz
+     * @param texto Mensaje a mostrar
+     * @param esError true si es mensaje de error, false si es de éxito
+     */
     private void mostrarMensaje(String texto, boolean esError) {
         etiquetaError.setVisible(esError);
         etiquetaExito.setVisible(!esError);

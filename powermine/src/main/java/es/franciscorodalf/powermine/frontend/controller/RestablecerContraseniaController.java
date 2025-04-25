@@ -13,6 +13,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
+/**
+ * Controlador para el restablecimiento de contraseña.
+ * Permite al usuario establecer una nueva contraseña después de la recuperación.
+ */
 public class RestablecerContraseniaController {
 
     @FXML
@@ -25,10 +29,18 @@ public class RestablecerContraseniaController {
     private Usuario usuario;
     private final AutenticacionService authService = new AutenticacionService();
 
+    /**
+     * Establece el usuario cuya contraseña se va a restablecer
+     * @param usuario Usuario a modificar
+     */
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
+    /**
+     * Maneja la validación y guardado de la nueva contraseña
+     * @param event Evento del botón guardar
+     */
     @FXML
     private void manejarGuardar(ActionEvent event) {
         String nueva = campoNuevaContrasenia.getText();

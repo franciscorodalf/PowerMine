@@ -3,6 +3,14 @@ package es.franciscorodalf.powermine.backend.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Clase que representa una partida jugada.
+ * Almacena toda la información relevante de una partida:
+ * - Usuario que la jugó
+ * - Dificultad seleccionada
+ * - Resultado y puntaje
+ * - Fecha y hora
+ */
 public class Partida {
     private int id;
     private int idUsuario;
@@ -11,9 +19,15 @@ public class Partida {
     private boolean ganada;
     private LocalDateTime fecha;
 
+    /**
+     * Constructor por defecto
+     */
     public Partida() {
     }
 
+    /**
+     * Constructor con todos los campos
+     */
     public Partida(int id, int idUsuario, String dificultad, int puntaje, boolean ganada, LocalDateTime fecha) {
         this.id = id;
         this.idUsuario = idUsuario;

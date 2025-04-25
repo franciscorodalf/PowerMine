@@ -16,6 +16,10 @@ import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 
+/**
+ * Controlador del menú principal de la aplicación.
+ * Muestra las estadísticas del usuario y permite navegar a las diferentes funcionalidades.
+ */
 public class MenuPrincipalController {
 
     @FXML
@@ -55,7 +59,10 @@ public class MenuPrincipalController {
         });
     }
 
-    /** Este es el método que debes usar para pasar el usuario tras el login */
+    /**
+     * Configura el menú para el usuario actual
+     * Carga y muestra sus estadísticas
+     */
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
         cargarInformacionUsuario();
@@ -67,6 +74,10 @@ public class MenuPrincipalController {
         AnimationUtil.fadeIn(labelPuntajeTotal, 1.3);
     }
 
+    /**
+     * Carga las estadísticas del usuario desde la base de datos
+     * Actualiza la interfaz con la información
+     */
     private void cargarInformacionUsuario() {
         if (usuarioActual == null)
             return;

@@ -12,6 +12,10 @@ import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.scene.control.TextField;
 
+/**
+ * Controlador para la pantalla de ranking.
+ * Muestra la clasificación de jugadores según sus puntuaciones.
+ */
 public class RankingController {
     @FXML private TableView<RankingUsuario> tablaRanking;
     @FXML private TableColumn<RankingUsuario, Integer> posicionColumn;
@@ -20,6 +24,9 @@ public class RankingController {
     @FXML private TableColumn<RankingUsuario, Integer> victoriasColumn;
     @FXML private TextField txtBuscar;
 
+    /**
+     * Inicializa la tabla de ranking y configura la búsqueda
+     */
     @FXML
     public void initialize() {
         posicionColumn.setCellValueFactory(cellData -> cellData.getValue().posicionProperty().asObject());

@@ -13,6 +13,10 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.stage.Modality;
 
+/**
+ * Controlador para la selección de dificultad de partida.
+ * Permite al usuario elegir entre diferentes niveles de dificultad antes de iniciar el juego.
+ */
 public class SeleccionPartidaController {
 
     @FXML private ToggleGroup grupoDificultad;
@@ -22,14 +26,20 @@ public class SeleccionPartidaController {
 
     private Usuario usuarioActual;
 
-    /** Recibido desde MenuPrincipalController */
+    /**
+     * Recibe el usuario desde el menú principal
+     * @param usuario Usuario actual del juego
+     */
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
         // Depurar: mostrar por consola el usuario recibido
         System.out.println("Usuario en SeleccionPartidaController: " + usuario);
     }
 
-    /** Botón “Iniciar Partida” */
+    /**
+     * Maneja el inicio de una nueva partida con la dificultad seleccionada
+     * @param event Evento del botón iniciar
+     */
     @FXML
     private void manejarIniciarPartida(ActionEvent event) {
         // Depurar: confirmar que usuarioActual no es nulo
@@ -90,6 +100,9 @@ public class SeleccionPartidaController {
         }
     }
 
+    /**
+     * Muestra la ventana de información sobre los poderes disponibles
+     */
     @FXML
     private void mostrarInfoPoderes() {
         try {

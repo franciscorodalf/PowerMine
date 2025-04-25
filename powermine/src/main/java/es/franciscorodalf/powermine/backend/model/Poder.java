@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Clase que representa los poderes especiales disponibles en el juego.
+ * Define los diferentes tipos de poderes, sus características y costos.
+ */
 public class Poder {
     private final int id;
     private final String nombre;
@@ -12,6 +16,9 @@ public class Poder {
     private final int costePuntos;
     private final Rareza rareza;
 
+    /**
+     * Enumeración de niveles de rareza para los poderes
+     */
     public enum Rareza {
         COMUN("Común", "⚪"),
         RARO("Raro", "🔵"),
@@ -37,6 +44,16 @@ public class Poder {
     public static final Poder TSUNAMI = new Poder(5, "Tsunami", "🌊", "Limpia toda una fila", 60, Rareza.EPICO);
     public static final Poder TERREMOTO = new Poder(6, "Terremoto", "🌋", "Limpia toda una columna", 60, Rareza.EPICO);
 
+    /**
+     * Constructor privado para crear nuevos poderes
+     * 
+     * @param id          Identificador único del poder
+     * @param nombre      Nombre del poder
+     * @param emoji       Emoji representativo
+     * @param descripcion Descripción del efecto
+     * @param costePuntos Costo en puntos para usar
+     * @param rareza      Nivel de rareza del poder
+     */
     private Poder(int id, String nombre, String emoji, String descripcion, int costePuntos, Rareza rareza) {
         this.id = id;
         this.nombre = nombre;

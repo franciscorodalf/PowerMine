@@ -1,12 +1,33 @@
 package es.franciscorodalf.powermine.backend.model;
+
 import java.util.Objects;
 
+/**
+ * Clase que representa un usuario del sistema.
+ * Almacena información básica del usuario como:
+ * - Credenciales de acceso
+ * - Información de perfil
+ */
 public class Usuario {
+    /**
+     * Identificador único del usuario en la base de datos
+     */
     private int id;
-    private String nombreUsuario;
-    private String correo;
-    private String contrasenia;
 
+    /**
+     * Nombre de usuario para login y display
+     */
+    private String nombreUsuario;
+
+    /**
+     * Correo electrónico del usuario
+     */
+    private String correo;
+
+    /**
+     * Contraseña del usuario
+     */
+    private String contrasenia;
 
     public Usuario() {
     }
@@ -89,11 +110,11 @@ public class Usuario {
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", nombreUsuario='" + getNombreUsuario() + "'" +
-            ", correo='" + getCorreo() + "'" +
-            ", contrasenia='" + getContrasenia() + "'" +
-            "}";
+                " id='" + getId() + "'" +
+                ", nombreUsuario='" + getNombreUsuario() + "'" +
+                ", correo='" + getCorreo() + "'" +
+                ", contrasenia='" + getContrasenia() + "'" +
+                "}";
     }
-    
+
 }

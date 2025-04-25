@@ -7,6 +7,10 @@ import javafx.scene.layout.HBox;
 import java.util.List;
 import javafx.scene.control.Tooltip;
 
+/**
+ * Controlador para la gestión de poderes especiales en el juego.
+ * Maneja la interfaz de selección y uso de poderes.
+ */
 public class PoderesController {
     @FXML
     private HBox contenedorPoderes;
@@ -23,6 +27,10 @@ public class PoderesController {
         contenedorPoderes.setUserData(this);
     }
 
+    /**
+     * Actualiza la lista de poderes disponibles
+     * Crea botones interactivos para cada poder
+     */
     public void actualizarPoderes(List<Poder> poderes) {
         contenedorPoderes.getChildren().clear();
         for (Poder poder : poderes) {

@@ -20,6 +20,10 @@ import javafx.animation.ScaleTransition;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+/**
+ * Controlador para la pantalla de inicio de sesión.
+ * Maneja la autenticación de usuarios y la navegación a registro y recuperación de contraseña.
+ */
 public class LoginController {
 
     @FXML
@@ -39,6 +43,10 @@ public class LoginController {
 
     private final AutenticacionService authService = new AutenticacionService();
 
+    /**
+     * Inicializa la pantalla con animaciones
+     * Configura la animación del logo y efectos visuales
+     */
     @FXML
     private void initialize() {
         // Asegurarse de que mainPane no sea null antes de aplicar la animación
@@ -57,6 +65,10 @@ public class LoginController {
         breathingAnimation.play();
     }
 
+    /**
+     * Maneja el intento de inicio de sesión
+     * Valida las credenciales y redirige al menú principal
+     */
     @FXML
     private void handleLogin(ActionEvent event) {
         // Oculta cualquier mensaje previo

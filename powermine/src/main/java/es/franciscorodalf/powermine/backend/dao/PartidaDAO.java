@@ -8,12 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
 
+/**
+ * Clase DAO para gestionar las operaciones de base de datos relacionadas con
+ * las partidas.
+ * Maneja el registro y consulta de partidas jugadas.
+ */
 public class PartidaDAO extends Conexion {
 
     public PartidaDAO() {
         super();
     }
 
+    /**
+     * Registra una nueva partida en la base de datos
+     * 
+     * @param partida Objeto Partida con los datos a guardar
+     * @return true si se registró correctamente
+     */
     public boolean registrarPartida(Partida partida) {
         String sql = "INSERT INTO partidas (id_usuario, dificultad, puntaje, ganada, fecha) VALUES (?, ?, ?, ?, datetime('now'))";
 
@@ -29,6 +40,12 @@ public class PartidaDAO extends Conexion {
         }
     }
 
+    /**
+     * Obtiene todas las partidas de un usuario específico
+     * 
+     * @param idUsuario ID del usuario
+     * @return Lista de partidas ordenadas por fecha
+     */
     public List<Partida> obtenerPartidasPorUsuario(int idUsuario) {
         List<Partida> partidas = new ArrayList<>();
         String sql = "SELECT * FROM partidas WHERE id_usuario = ? ORDER BY fecha DESC";
@@ -54,6 +71,12 @@ public class PartidaDAO extends Conexion {
         return partidas;
     }
 
+    /**
+     * Cuenta el número de partidas ganadas por un usuario
+     * 
+     * @param idUsuario ID del usuario
+     * @return Número de victorias
+     */
     public int contarPartidasGanadas(int idUsuario) {
         String sql = "SELECT COUNT(*) FROM partidas WHERE id_usuario = ? AND ganada = 1";
 
@@ -72,6 +95,12 @@ public class PartidaDAO extends Conexion {
         return 0;
     }
 
+    /**
+     * Calcula el puntaje total acumulado por un usuario
+     * 
+     * @param idUsuario ID del usuario
+     * @return Suma total de puntos
+     */
     public int obtenerPuntajeTotal(int idUsuario) {
         String sql = "SELECT SUM(puntaje) FROM partidas WHERE id_usuario = ?";
 

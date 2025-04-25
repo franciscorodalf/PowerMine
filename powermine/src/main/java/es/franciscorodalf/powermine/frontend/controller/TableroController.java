@@ -26,7 +26,11 @@ import java.util.List;
 
 /**
  * Controlador principal del juego Buscaminas.
- * Maneja la lógica del tablero y la interacción con los poderes especiales.
+ * Gestiona toda la lógica del juego:
+ * - Generación del tablero
+ * - Manejo de clicks y revelación de casillas
+ * - Sistema de poderes especiales
+ * - Puntuación y finalización de partida
  */
 public class TableroController {
     // Variables FXML para elementos de la interfaz
@@ -89,7 +93,8 @@ public class TableroController {
     }
 
     /**
-     * Configura el tablero según el nivel de dificultad seleccionado
+     * Configura el tablero según la dificultad seleccionada
+     * @param dificultad Nivel de dificultad (Fácil, Medio, Difícil)
      */
     private void configurarTablero(String dificultad) {
         switch (dificultad) {
@@ -114,7 +119,7 @@ public class TableroController {
     }
 
     /**
-     * Inicializa el tablero colocando minas y calculando números
+     * Inicializa el tablero colocando minas y calculando números adyacentes
      */
     private void inicializarTablero() {
         gridTablero.getChildren().clear();

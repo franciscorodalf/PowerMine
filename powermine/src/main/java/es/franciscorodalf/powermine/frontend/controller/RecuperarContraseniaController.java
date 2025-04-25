@@ -10,11 +10,19 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import es.franciscorodalf.powermine.backend.service.AlertaService;
 
+/**
+ * Controlador para la recuperación de contraseña.
+ * Maneja el proceso de solicitud de recuperación mediante correo o nombre de usuario.
+ */
 public class RecuperarContraseniaController {
 
     @FXML private TextField campoIdentificador;
     @FXML private Label etiquetaMensaje;
 
+    /**
+     * Maneja el proceso de solicitud de recuperación
+     * @param event Evento del botón recuperar
+     */
     @FXML
     private void manejarRecuperacion(ActionEvent event) {
         String identificador = campoIdentificador.getText().trim();
@@ -31,6 +39,10 @@ public class RecuperarContraseniaController {
         etiquetaMensaje.setVisible(true);
     }
 
+    /**
+     * Maneja la navegación de vuelta a la pantalla de login
+     * @param event Evento del botón volver
+     */
     @FXML
     private void manejarIrALogin(ActionEvent event) {
         try {

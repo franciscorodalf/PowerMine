@@ -1,72 +1,49 @@
 package es.franciscorodalf.powermine.backend.model.abstractas;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Clase abstracta que gestiona la conexión a la base de datos SQLite.
+ * Proporciona métodos comunes para todos los DAOs.
+ */
 public abstract class Conexion {
-
-    private String rutaArchivoBD;
+    /**
+     * Instancia única de la conexión a la base de datos
+     */
     private static Connection connection;
+    
+    /**
+     * Ruta al archivo de la base de datos
+     */
+    private static final String DATABASE_URL = "jdbc:sqlite:powermine.db";
 
-    public Conexion() {
-        this.rutaArchivoBD = "src/main/resources/db/powermine.db";
+    /**
+     * Constructor que inicializa la conexión
+     */
+    protected Conexion() {
+        crearConexion();
     }
 
     /**
-     * Constructor que recibe la ruta del archivo de la base de datos.
-     *
-     * @param unaRutaArchivoBD Ruta del archivo de la base de datos.
-     * @throws SQLException Si la ruta es nula o el archivo no existe.
+     * Obtiene la conexión existente o crea una nueva
      */
-    public Conexion(String unaRutaArchivoBD) throws SQLException {
-        if (unaRutaArchivoBD == null || unaRutaArchivoBD.isEmpty()) {
-            throw new SQLException("El fichero es nulo o vacío");
-        }
-
-        File file = new File(unaRutaArchivoBD);
-        if (!file.exists()) {
-            throw new SQLException("No existe la base de datos: " + unaRutaArchivoBD);
-        }
-
-        this.rutaArchivoBD = unaRutaArchivoBD;
-    }
-
-    /**
-     * Constructor que recibe la ruta del archivo de la base de datos.
-     *
-     * @param unaRutaArchivoBD Ruta del archivo de la base de datos.
-     */
-    public String getRutaArchivoBD() {
-        return this.rutaArchivoBD;
-    }
-
-    /**
-     * Establece la ruta del archivo de la base de datos.
-     *
-     * @param unaRutaArchivoBD Ruta del archivo de la base de datos.
-     */
-    public Connection getConnection() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                connection = DriverManager.getConnection("jdbc:sqlite:" + rutaArchivoBD);
-            }
-        } catch (SQLException e) {
-            System.err.println("❌ Error al obtener la conexión a la BD");
-            e.printStackTrace();
-        }
-
+    protected Connection getConnection() {
         return connection;
     }
 
     /**
-     * Establece la ruta del archivo de la base de datos.
-     *
-     * @param unaRutaArchivoBD Ruta del archivo de la base de datos.
+     * Inicializa la conexión a la base de datos
      */
-    public Connection conectar() throws SQLException {
-        return getConnection();
+    private void crearConexion() {
+        try {
+            if (connection == null) {
+                connection = DriverManager.getConnection(DATABASE_URL);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
     /**
