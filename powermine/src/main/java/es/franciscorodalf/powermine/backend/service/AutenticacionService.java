@@ -3,6 +3,10 @@ package es.franciscorodalf.powermine.backend.service;
 import es.franciscorodalf.powermine.backend.dao.UsuarioDAO;
 import es.franciscorodalf.powermine.backend.model.Usuario;
 
+/**
+ * Servicio para gestionar la autenticación de usuarios.
+ * Proporciona funcionalidades para iniciar sesión, registrar y actualizar usuarios.
+ */
 public class AutenticacionService {
 
     private final UsuarioDAO usuarioDAO;
@@ -19,13 +23,8 @@ public class AutenticacionService {
      * @return Usuario autenticado o null si las credenciales no coinciden
      */
     public Usuario iniciarSesion(String identificador, String contrasenia) {
-        Usuario usuario = usuarioDAO.buscarPorCorreoONombre(identificador);
-
-        if (usuario != null && usuario.getContrasenia().equals(contrasenia)) {
-            return usuario;
-        }
-
-        return null;
+        // Usar el método login específico en lugar de buscarPorCorreoONombre
+        return usuarioDAO.login(identificador, contrasenia);
     }
 
     /**

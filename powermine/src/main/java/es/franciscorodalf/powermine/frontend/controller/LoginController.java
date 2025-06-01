@@ -77,6 +77,9 @@ public class LoginController {
         String identificador = txtEmail.getText().trim();
         String contrasenia = txtPassword.getText();
 
+        // Log para diagnóstico
+        System.out.println("Intentando login con: " + identificador);
+
         // Validaciones básicas
         if (identificador.isEmpty() || contrasenia.isEmpty()) {
             if (identificador.isEmpty()) AnimationUtil.shake(txtEmail);
@@ -86,29 +89,40 @@ public class LoginController {
             return;
         }
 
-        // Intento de login
-        Usuario user = authService.iniciarSesion(identificador, contrasenia);
-        if (user == null) {
-            lblMensaje.setText("Correo o contraseña incorrectos.");
-            lblMensaje.setVisible(true);
-            return;
-        }
-
-        // Modificar la transición al menú principal
-        AnimationUtil.fadeOut(mainPane, 0.5, () -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/menu-principal.fxml"));
-                Parent root = loader.load();
-                MenuPrincipalController menuCtrl = loader.getController();
-                menuCtrl.setUsuarioActual(user);
-                Stage stage = (Stage) mainPane.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (Exception e) {
-                AlertaService.mostrarErrorDespuesDeAnimacion("Error", "No se pudo abrir el menú principal.");
-                e.printStackTrace();
+        // Intento de login con mejor manejo de errores
+        try {
+            Usuario user = authService.iniciarSesion(identificador, contrasenia);
+            
+            if (user == null) {
+                lblMensaje.setText("Correo o contraseña incorrectos.");
+                lblMensaje.setVisible(true);
+                System.out.println("Login fallido: usuario no encontrado o contraseña incorrecta");
+                return;
             }
-        });
+            
+            System.out.println("Login exitoso para usuario: " + user.getNombreUsuario());
+
+            // Modificar la transición al menú principal
+            AnimationUtil.fadeOut(mainPane, 0.5, () -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/menu-principal.fxml"));
+                    Parent root = loader.load();
+                    MenuPrincipalController menuCtrl = loader.getController();
+                    menuCtrl.setUsuarioActual(user);
+                    Stage stage = (Stage) mainPane.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } catch (Exception e) {
+                    AlertaService.mostrarErrorDespuesDeAnimacion("Error", "No se pudo abrir el menú principal.");
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            lblMensaje.setText("Error al iniciar sesión: " + e.getMessage());
+            lblMensaje.setVisible(true);
+            System.err.println("Error durante el login: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML

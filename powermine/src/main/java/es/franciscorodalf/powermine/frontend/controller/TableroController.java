@@ -83,6 +83,9 @@ public class TableroController {
     private void initialize() {
         labelNombrePoder.setText("Ningún poder seleccionado");
         labelDescripcionPoder.setText("Selecciona un poder para ver su descripción");
+        
+        // Ajustar tamaño de las casillas para aprovechar más espacio
+        gridTablero.setPrefSize(800, 650);
     }
 
     public void iniciarPartida(Usuario usuario, String dificultad) {
@@ -152,7 +155,7 @@ public class TableroController {
     private Button crearCasilla(int fila, int columna) {
         Button casilla = new Button();
         casilla.getStyleClass().add("casilla");
-        casilla.setMinSize(35, 35); // Reducido de 40 a 35
+        casilla.setMinSize(40, 40); // Aumentado de 35 a 40 para mejor visualización
         casilla.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         casilla.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {

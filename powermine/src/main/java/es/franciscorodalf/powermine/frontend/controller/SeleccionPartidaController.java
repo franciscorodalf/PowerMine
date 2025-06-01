@@ -32,7 +32,6 @@ public class SeleccionPartidaController {
      */
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
-        // Depurar: mostrar por consola el usuario recibido
         System.out.println("Usuario en SeleccionPartidaController: " + usuario);
     }
 
@@ -42,12 +41,10 @@ public class SeleccionPartidaController {
      */
     @FXML
     private void manejarIniciarPartida(ActionEvent event) {
-        // Depurar: confirmar que usuarioActual no es nulo
         if (usuarioActual == null) {
             System.err.println("❌ Error: usuarioActual es null en SeleccionPartidaController");
         }
 
-        // Determinar nivel según selección
         String nivel;
         if (opcionFacil.isSelected()) {
             nivel = "Fácil";
@@ -63,12 +60,17 @@ public class SeleccionPartidaController {
             );
             Parent root = loader.load();
 
-            // Pasamos usuario y nivel al TableroController
             TableroController tableroCtrl = loader.getController();
             tableroCtrl.iniciarPartida(usuarioActual, nivel);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            
+            stage.setWidth(1000);  // Ancho más grande
+            stage.setHeight(850);  // Alto más grande
+            
             stage.setScene(new Scene(root));
+            stage.centerOnScreen(); // Centrar la ventana en la pantalla
+            stage.setTitle("PowerMine - " + nivel); // Añadir título con dificultad
             stage.show();
 
         } catch (Exception e) {
@@ -77,7 +79,6 @@ public class SeleccionPartidaController {
         }
     }
 
-    /** Botón “Volver” */
     @FXML
     private void manejarVolverAlMenu(ActionEvent event) {
         try {
@@ -86,7 +87,6 @@ public class SeleccionPartidaController {
             );
             Parent root = loader.load();
 
-            // Devolvemos el usuario al menú principal
             MenuPrincipalController menuCtrl = loader.getController();
             menuCtrl.setUsuarioActual(usuarioActual);
 

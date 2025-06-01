@@ -144,9 +144,7 @@ public class MenuPrincipalController {
                         getClass().getResource("/views/seleccion-partida.fxml"));
                 Parent root = loader.load();
 
-                // 1️⃣ Obtienes el controller de la pantalla de selección...
                 SeleccionPartidaController spc = loader.getController();
-                // 2️⃣ Le pasas el usuario logueado
                 spc.setUsuarioActual(usuarioActual);
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

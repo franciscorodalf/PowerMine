@@ -93,6 +93,13 @@ public class UsuarioDAO extends Conexion {
         }
     }
 
+    /**
+     * Autentica a un usuario verificando sus credenciales
+     * 
+     * @param identificador Correo o nombre de usuario
+     * @param contrasenia Contraseña del usuario
+     * @return Usuario autenticado o null si falló la autenticación
+     */
     public Usuario login(String identificador, String contrasenia) {
         String sql = "SELECT * FROM usuarios WHERE correo = ? OR nombre_usuario = ?";
 
@@ -100,21 +107,33 @@ public class UsuarioDAO extends Conexion {
             stmt.setString(1, identificador);
             stmt.setString(2, identificador);
 
-            ResultSet rs = stmt.executeQuery();
+            // Debug: Mostrar consulta SQL
+            System.out.println("Ejecutando consulta: " + sql.replace("?", "'" + identificador + "'"));
 
+            ResultSet rs = stmt.executeQuery();
+            
             if (rs.next()) {
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre_usuario");
+                String correo = rs.getString("correo");
                 String contraseniaEnBD = rs.getString("contrasenia");
-                if (contraseniaEnBD.equals(contrasenia)) {
-                    return new Usuario(
-                            rs.getInt("id"),
-                            rs.getString("nombre_usuario"),
-                            rs.getString("correo"),
-                            contraseniaEnBD);
+                
+                System.out.println("Usuario encontrado: " + nombre);
+                
+                // Comparar la contraseña sin procesar con la almacenada
+                if (contraseniaEnBD != null && contraseniaEnBD.equals(contrasenia)) {
+                    System.out.println("Contraseña correcta para usuario: " + nombre);
+                    return new Usuario(id, nombre, correo, contraseniaEnBD);
+                } else {
+                    System.out.println("Contraseña incorrecta para usuario: " + nombre);
                 }
+            } else {
+                System.out.println("No se encontró usuario con identificador: " + identificador);
             }
 
         } catch (SQLException e) {
             System.err.println("❌ Error al iniciar sesión: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
